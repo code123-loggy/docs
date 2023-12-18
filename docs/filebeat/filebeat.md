@@ -1,3 +1,7 @@
+Title:   Filebeat配置
+Summary: 配置如何通过Filebeat收集日志
+Date:    Nov 23, 2023
+
 # filebeat配置
 
 filebeat是elastic开源的日志收集组件。loggy也可以直接使用它来做日志接入。
@@ -37,7 +41,7 @@ filebeat是elastic开源的日志收集组件。loggy也可以直接使用它来
 3. 解析器是有点复杂，但不用担心，官方文档组织的很好。
 下面就是一个从日志中提取时间的例子，这也是日常使用最多的情况之一。
 
-        # ================================= 解析器配置        =================================
+        # =================================解析器配置=================================
         # 通过脚本来提取日志时间
         processors:
           - script:
@@ -63,7 +67,8 @@ filebeat是elastic开源的日志收集组件。loggy也可以直接使用它来
 第三，然后通过 `drop_fields` 把第一步中的临时字段删除。
 
 ## 收集syslog
-第一，先在filebeat中配置一个inputs，这里配置了用udp协议监听7654端口的syslog输入。
+
+1. 先在filebeat中配置一个inputs，这里配置了用udp协议监听7654端口的syslog输入。
 
         filebeat.inputs:
         - type: syslog
@@ -71,53 +76,53 @@ filebeat是elastic开源的日志收集组件。loggy也可以直接使用它来
           protocol.udp:
             host: "localhost:7654"
 
-由于loggy需要其他一些信息，我们再配置一个处理器，对数据格式稍作调整。调整后的`process`看起是这样的，`copy-fields` 和 `replace` 这两个指令是新加的。
-```
-processors:
-  - script:
-      lang: javascript
-      source: >
-        function process(event) {
-            var str = event.Get("message");
-            var ts = str.split(" ").slice(0,2).join(" ");
-            event.Put("log_time", ts);
-        }
-  - timestamp:
-      field: log_time
-      layouts:
-        - '2006-01-02 15:04:05.999'
-      test:
-        - '2019-11-18 04:59:51.123'
-      fail_on_error: false
-      ignore_missing: true
-  - copy_fields:
-      fields:
-      - from: log.source.address
-        to: source
-      fail_on_error: false
-      ignore_missing: true
-  - replace:
-      fields:
-        - field: "source"
-          pattern: '(\d+\.\d+\.\d+\.\d+):\d+'
-          replacement: "$1"
-      ignore_missing: true
-      fail_on_error: false
-  - drop_fields:
-      fields: ["log_time","host"]
-```
+2. 由于loggy需要其他一些信息，我们再配置一个处理器，对数据格式稍作调整。调整后的`process`看起是这样的，`copy-fields` 和 `replace` 这两个指令是新加的。
+  
+        processors:
+          - script:
+              lang: javascript
+              source: >
+                function process(event) {
+                    var str = event.Get("message");
+                    var ts = str.split(" ").slice(0,2).join(" ");
+                    event.Put("log_time", ts);
+                }
+          - timestamp:
+              field: log_time
+              layouts:
+                - '2006-01-02 15:04:05.999'
+              test:
+                - '2019-11-18 04:59:51.123'
+              fail_on_error: false
+              ignore_missing: true
+          - copy_fields:
+              fields:
+              - from: log.source.address
+                to: source
+              fail_on_error: false
+              ignore_missing: true
+          - replace:
+              fields:
+                - field: "source"
+                  pattern: '(\d+\.\d+\.\d+\.\d+):\d+'
+                  replacement: "$1"
+              ignore_missing: true
+              fail_on_error: false
+          - drop_fields:
+              fields: ["log_time","host"]
 
-第二，配置 /etc/rsyslog.conf转发syslog到这个端口
-```
-## 修改 /etc/rsyslog.conf，增加syslog转发到本机的9876端口，保存，重启
-*.* @localhost:9876
-```
-> 需求完成之后记得重启 rsyslog 服务
+2. 配置 `/etc/rsyslog.conf`转发syslog到这个端口    
+修改完成之后记得重启 rsyslog 服务
 
-第三，启动filebeat后，用ss命令确认7654端口已经开启，在linux可以用logger来发送syslog来验证。
-```
-logger Test Message
-```
+        ## 修改 /etc/rsyslog.conf，增加syslog转发到本机的9876端口，保存，重启
+        *.* @localhost:9876
+
+
+
+2. 启动filebeat后，用ss命令确认7654端口已经开启，在linux可以用logger来发送syslog来验证。
+        
+        logger Test Message
+        
 
 ## 运行
 配置文件配好之后就可以运行了。

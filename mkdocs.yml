@@ -1,5 +1,23 @@
 site_name: Loggy Docs
 site_url: http://101.34.53.69:18080/
+
 nav:
   - 首页: index.md
-  - 关于: about.md
+
+copyright: Copyright &copy; 2023 - 2024 Code123
+
+
+plugins:
+#  - optimize
+  - search:
+      min_search_length: 2
+      separator: '[\s\-\.]+'
+      lang: ja
+      indexing: 'full'
+
+theme:
+  name: mkdocs
+  # name: readthedocs
+  locale: zh_CN
+extra_css:
+  - style.css
