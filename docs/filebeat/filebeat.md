@@ -4,7 +4,7 @@ Date:    Nov 23, 2023
 
 # filebeat配置
 
-<img src="../bird-8253245_1280.jpg" style="height:190px;width:100%; object-fit: cover;"/>
+<img src="./bird-8253245_1280.jpg" class="cover"/>
 
 
 filebeat是elastic开源的日志收集组件。loggy也可以直接使用它来做日志接入。

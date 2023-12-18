@@ -1,10 +1,13 @@
 site_name: Loggy Docs
 site_url: http://101.34.53.69:18080/
+copyright: Copyright &copy; 2023 - 2024 Code123
 
 nav:
   - 首页: index.md
+  - 安装: install/install.md
+  - 配置: filebeat/filebeat.md
+  - 截图: screenshots/screenshots.md
 
-copyright: Copyright &copy; 2023 - 2024 Code123
 
 
 plugins:
@@ -14,10 +17,13 @@ plugins:
       separator: '[\s\-\.]+'
       lang: ja
       indexing: 'full'
-
+#  - mkdocs-simple-hooks:
+#hooks:
+#  - hooks.py
 theme:
   name: mkdocs
   # name: readthedocs
   locale: zh_CN
 extra_css:
   - style.css
+use_directory_urls: false

@@ -1,6 +1,6 @@
 # 安装
 
-<img src="../kingfisher-2046453_1280.jpg" style="height:190px;width:100%; object-fit: cover;object-position: right top;"/>
+<img src="./kingfisher-2046453_1280.jpg" class="cover rt"/>
 
 ## 准备
 * 硬件环境   
