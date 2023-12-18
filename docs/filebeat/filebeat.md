@@ -4,6 +4,9 @@ Date:    Nov 23, 2023
 
 # filebeat配置
 
+<img src="../bird-8253245_1280.jpg" style="height:190px;width:100%; object-fit: cover;"/>
+
+
 filebeat是elastic开源的日志收集组件。loggy也可以直接使用它来做日志接入。
 > 文中以filebeat-oss-8.7.0版本示范，其它版本可能略有区别。[下载](https://www.elastic.co/cn/downloads/past-releases/filebeat-oss-8-7-0)
 

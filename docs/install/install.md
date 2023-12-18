@@ -1,6 +1,6 @@
 # 安装
 
-<img src="../pexels-scott-webb-1544943.jpg" style="height:190px;width:100%; object-fit: cover;"/>
+<img src="../kingfisher-2046453_1280.jpg" style="height:190px;width:100%; object-fit: cover;object-position: right top;"/>
 
 ## 准备
 * 硬件环境   
