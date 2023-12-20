@@ -1,3 +1,8 @@
+Title:   Loggy Docs
+Summary: Loggy使用手册
+Date:    Nov 23, 2023
+nav:  false
+
 <div class="grid"></div>
 
 * [安装](./install/install.md)    
