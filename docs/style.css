@@ -4,3 +4,45 @@ img.cover {
 img.cover.rt {
     height:190px;width:100%; object-fit: cover;object-position: right top;
 }
+div.grid + ul {
+    display: flex;
+    gap: 8px;
+}
+
+div.grid + ul li {
+    flex: 1;
+    height: 220px;
+    background-color: rgb(255, 255, 255);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 30px;
+    gap: 13px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 2px 2px 20px rgba(0, 0, 0, 0.062);
+}
+div.grid + ul li > a {
+    width: 200px;
+    height: 30px;
+    background-color: #7b57ff;
+    transition-duration: .2s;
+    border: none;
+    color: rgb(241, 241, 241);
+    cursor: pointer;
+    font-weight: 600;
+    border-radius: 20px;
+    box-shadow: 0 4px 6px -1px #977ef3, 0 2px 4px -1px #977ef3;
+    transition: all .6s ease;
+    text-align: center;
+    font-size: 18px;
+    position: absolute;
+    bottom: 20px;
+}
+div.grid + ul li > img {
+    position: absolute;
+    top: 20px;
+    height:120px; width:80%; object-fit: cover;
+}

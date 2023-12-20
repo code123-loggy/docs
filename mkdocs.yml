@@ -22,8 +22,9 @@ plugins:
 #  - hooks.py
 theme:
   name: mkdocs
-  # name: readthedocs
   locale: zh_CN
 extra_css:
   - style.css
 use_directory_urls: false
+markdown_extensions:
+  - smarty
