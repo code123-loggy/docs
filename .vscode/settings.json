@@ -1,0 +1,9 @@
+{
+    "markdown.server.log": "debug",
+    "markdown.styles": [
+        ".\\docs\\style.css"
+    ],
+    "markdown.trace.extension": "verbose",
+    "markdown.trace.server": "verbose"
+    
+}
