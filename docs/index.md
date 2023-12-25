@@ -11,4 +11,5 @@ nav:  false
 ![img](./filebeat/bird-8253245_1280.jpg)
 * [系统截图](./screenshots/screenshots.md)    
 ![img](./screenshots/0b65d6c8e05a3adbd7c7524b8a4e6dd3.png)
-
+* [FAQS](./faqs/FAQS.md)    
+![img](./faqs/pexels-daniyal-ghanavati-110812.jpg)
