@@ -49,7 +49,7 @@ db.tsdb.pass=quest
 
 ## Secp配置文件
 ```
-## 端口，用户接收filebeat的数据，对应filebeat.yml output模块的配置路径`filebeat/es/`
+## 端口，用户接收filebeat的数据，对应filebeat.yml output模块的配置路径`hosts: ["localhost:1234/filebeat/es/"]`
 server.bind.ip=0.0.0.0
 server.port=1234
 ## tsdb 对应Questdb的配置
