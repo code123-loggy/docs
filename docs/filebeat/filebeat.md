@@ -38,7 +38,7 @@ filebeat是elastic开源的日志收集组件。loggy也可以直接使用它来
         output.elasticsearch:
           enabled: true
           # Array of hosts to connect to.
-          hosts: ["localhost:1234/metrics-console/filebeat/es/"]
+          hosts: ["localhost:1234/filebeat/es/"]
           allow_older_versions: true
 
 3. 解析器是有点复杂，但不用担心，官方文档组织的很好。
@@ -71,13 +71,13 @@ filebeat是elastic开源的日志收集组件。loggy也可以直接使用它来
 
 ## 收集syslog
 
-1. 先在filebeat中配置一个inputs，这里配置了用udp协议监听7654端口的syslog输入。
+1. 先在filebeat中配置一个inputs，这里配置了用udp协议监听`9876`端口的syslog输入。
 
         filebeat.inputs:
         - type: syslog
           format: rfc3164
           protocol.udp:
-            host: "localhost:7654"
+            host: "localhost:9876"
 
 2. 由于loggy需要其他一些信息，我们再配置一个处理器，对数据格式稍作调整。调整后的`process`看起是这样的，`copy-fields` 和 `replace` 这两个指令是新加的。
   
