@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        <link rel="canonical" href="http://101.34.53.69:18080/faqs/FAQS.html">
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>FAQS - Loggy Docs</title>
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css">
+        <link href="../style.css" rel="stylesheet">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../index.html">Loggy Docs</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="navitem">
+                                <a href="../index.html" class="nav-link">首页</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../install/install.html" class="nav-link">安装</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../filebeat/filebeat.html" class="nav-link">配置</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../screenshots/screenshots.html" class="nav-link">截图</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-toggle="modal" data-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    
+                        <div class="col-md-3"><div class="navbar-light navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-level="1"><a href="#faqs" class="nav-link">FAQS</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-level="2"><a href="#java_home" class="nav-link">启动如何指定 JAVA_HOME</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#questdb" class="nav-link">Questdb 的数据目录在哪里</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#questdb_1" class="nav-link">Questdb 的监听端口怎么修改</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#questdb_2" class="nav-link">Questdb 的端口</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#console" class="nav-link">Console配置文件</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#secp" class="nav-link">Secp配置文件</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                        <div class="col-md-9" role="main">
+
+<h1 id="faqs">FAQS</h1>
+<p><img src="./pexels-daniyal-ghanavati-110812.jpg" class="cover"/></p>
+<h2 id="java_home">启动如何指定 JAVA_HOME</h2>
+<pre><code>JAVA_HOME=/usr/lib/jvm/openjdk-11-jdk /opt/loggy/scep/bin/scep.sh start
+</code></pre>
+<h2 id="questdb">Questdb 的数据目录在哪里</h2>
+<p>Linux 下，Questdb 默认数据目录<code>$HOME/.questdb</code>， windows 下<code>C:\Windows\System32\qdbroot</code>，通过<code>quest.sh -d path_to_data</code> <code>-d</code>参数执行数据目录</p>
+<h2 id="questdb_1">Questdb 的监听端口怎么修改</h2>
+<pre><code>## $DAT_DIR/conf/server.conf
+http.bind.to=0.0.0.0:9000
+</code></pre>
+<p>更多<a href="https://questdb.io/docs/configuration/">参考</a></p>
+<h2 id="questdb_2">Questdb 的端口</h2>
+<table>
+<thead>
+<tr>
+<th>端口</th>
+<th>配置</th>
+<th>说明</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>9009</td>
+<td>line.tcp.net.bind.to</td>
+<td>line 协议数据</td>
+<td><code>line.tcp.net.bind.to=0.0.0.0:9009</code></td>
+</tr>
+<tr>
+<td>9000</td>
+<td>http.bind.to</td>
+<td>Web 和 Rest 接口</td>
+<td><code>http.bind.to=0.0.0.0:9000</code></td>
+</tr>
+<tr>
+<td>8812</td>
+<td>pg.net.bind.to</td>
+<td>postgres 协议端口</td>
+<td><code>pg.net.bind.to=8812</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="console">Console配置文件</h2>
+<pre><code>server.port=9080
+## default数据库配置，用于保存配置
+db.default.url=jdbc:mysql://localhost:3306/scep?useUnicode=true&amp;characterEncoding=UTF-8&amp;useSSL=false&amp;connectTimeout=20000
+db.default.driver=com.mysql.jdbc.Driver
+db.default.user=scep
+db.default.pass=123456
+## tsdb 指向Questdb，假如Questdb端口有修改，请相应修改
+db.tsdb.url=jdbc:postgresql://localhost:8812/qdb
+db.tsdb.driver=org.postgresql.Driver
+db.tsdb.user=admin
+db.tsdb.pass=quest
+</code></pre>
+<h2 id="secp">Secp配置文件</h2>
+<pre><code>## 端口，用户接收filebeat的数据，对应filebeat.yml output模块的配置路径`hosts: [&quot;localhost:1234/filebeat/es/&quot;]`
+server.bind.ip=0.0.0.0
+server.port=1234
+## tsdb 对应Questdb的配置
+db.tsdb.url=jdbc:postgresql://localhost:8812/qdb
+db.tsdb.driver=org.postgresql.Driver
+db.tsdb.user=admin
+db.tsdb.pass=quest
+## biz.rule.url，这两个地址指向Console服务的地址，假如Console中有修改，请做对应修改
+biz.rule.url=http://localhost:9080/api/v1/jsonapi/BizRuleConfig/list
+alert.rule.url=http://localhost:9080/api/v1/jsonapi/AlertRuleConfig/list
+## 对应Questdb得`line.tcp.net.bind.to`
+qdb.lp=localhost:9009
+## 数据默认时区，不建议修改
+evt.tz=+0
+</code></pre></div>
+                    
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+                <p>Copyright &copy; 2023 - 2024 Code123</p>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../js/jquery-3.6.0.min.js"></script>
+        <script src="../js/bootstrap.min.js"></script>
+        <script>
+            var base_url = "..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../js/base.js"></script>
+        <script src="../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

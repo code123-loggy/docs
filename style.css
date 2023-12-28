@@ -1,0 +1,88 @@
+img.cover {
+    height: 190px;
+    width: 100%;
+    object-fit: cover;
+}
+
+img.cover.rt {
+    height: 190px;
+    width: 100%;
+    object-fit: cover;
+    object-position: right top;
+}
+
+div.grid+ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+div.grid+ul li {
+    flex: 1;
+    height: 220px;
+    background-color: rgb(255, 255, 255);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 30px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 2px 2px 20px rgba(0, 0, 0, 0.062);
+}
+
+div.grid+ul li>a {
+    width: 200px;
+    height: 30px;
+    background-color: #7b57ff;
+    transition-duration: .2s;
+    border: none;
+    color: rgb(241, 241, 241);
+    cursor: pointer;
+    font-weight: 600;
+    border-radius: 20px;
+    box-shadow: 0 4px 6px -1px #977ef3, 0 2px 4px -1px #977ef3;
+    transition: all .6s ease;
+    text-align: center;
+    font-size: 18px;
+    position: absolute;
+    bottom: 20px;
+}
+
+div.grid+ul li > img {
+    height: 120px;
+    width: 80%;
+    object-fit: cover;
+}
+
+
+@media (max-width: 1200px) {
+    div.grid+ul {
+        display: flex;
+        flex-direction: row;
+    }
+    div.grid+ul li {
+        flex: 22%;
+    }
+}
+
+@media (max-width: 768px) {
+    div.grid+ul {
+        display: flex;
+        flex-direction: row;
+    }
+    div.grid+ul li {
+        flex: 40%;
+    }
+}
+
+@media (max-width: 600px) {
+    div.grid+ul {
+        display: flex;
+        flex-direction: column;
+    }
+    div.grid+ul li {
+        flex: 100%;
+    }
+}

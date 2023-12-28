@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        <link rel="canonical" href="http://101.34.53.69:18080/filebeat/filebeat.html">
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>配置 - Loggy Docs</title>
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css">
+        <link href="../style.css" rel="stylesheet">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../index.html">Loggy Docs</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="navitem">
+                                <a href="../index.html" class="nav-link">首页</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../install/install.html" class="nav-link">安装</a>
+                            </li>
+                            <li class="navitem active">
+                                <a href="filebeat.html" class="nav-link">配置</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../screenshots/screenshots.html" class="nav-link">截图</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-toggle="modal" data-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../install/install.html" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../screenshots/screenshots.html" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    
+                        <div class="col-md-3"><div class="navbar-light navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-level="1"><a href="#filebeat" class="nav-link">filebeat配置</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-level="2"><a href="#_1" class="nav-link">收集日志文件</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#syslog" class="nav-link">收集syslog</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#_2" class="nav-link">运行</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                        <div class="col-md-9" role="main">
+
+<h1 id="filebeat">filebeat配置</h1>
+<p><img src="./bird-8253245_1280.jpg" class="cover"/></p>
+<p>filebeat是elastic开源的日志收集组件。loggy也可以直接使用它来做日志接入。</p>
+<blockquote>
+<p>文中以filebeat-oss-8.7.0版本示范，其它版本可能略有区别。<a href="https://www.elastic.co/cn/downloads/past-releases/filebeat-oss-8-7-0">下载</a></p>
+</blockquote>
+<h2 id="_1">收集日志文件</h2>
+<ol>
+<li>
+<p>首先在filebeat.yml文件中增加inputs，类型是filestream，日志路径可以使用通配符，解析部分使用了一个多行的解析，这里用日期开头来区分日志行。   </p>
+<pre><code># filebeat.yml
+filebeat.inputs:
+# 输入配置
+- type: filestream
+  # Unique ID among all inputs, an ID is required.
+  id: my-filestream-id
+  # Change to true to enable this input configuration.
+  enabled: true
+  # 日志路径， linux 和 windows 参考下面例子，支持通配符
+  paths:
+    #- /var/log/*.log
+    - D:\...\app-*.log
+  parsers:
+    - multiline:
+        type: pattern
+        pattern: '^20[0-9]{2}-[0-9]{2}-[0-9]{2}'
+        negate: true
+        match: after
+</code></pre>
+</li>
+<li>
+<p>配置一个输出，loggy采用eslasticsearch格式来接收日志，所以需要选用output.elasticsearch</p>
+<pre><code># 输出配置
+output.elasticsearch:
+  enabled: true
+  # Array of hosts to connect to.
+  hosts: ["localhost:1234/filebeat/es/"]
+  allow_older_versions: true
+</code></pre>
+</li>
+<li>
+<p>解析器是有点复杂，但不用担心，官方文档组织的很好。
+下面就是一个从日志中提取时间的例子，这也是日常使用最多的情况之一。</p>
+<pre><code># =================================解析器配置=================================
+# 通过脚本来提取日志时间
+processors:
+  - script:
+      lang: javascript
+      source: &gt;
+        function process(event) {
+            var str = event.Get("message");
+            var ts = str.split(" ").slice(0,2).join(" ");
+            event.Put("log_time", ts);
+        }
+  - timestamp:
+      field: log_time
+      layouts:
+        - '2006-01-02 15:04:05.999'
+      test:
+        - '2019-11-18 04:59:51.123'
+  - drop_fields:
+      fields: [log_time]
+</code></pre>
+</li>
+</ol>
+<p>从日志中提取时间，分三步 <br />
+第一，script来从日志中找到时间戳。例子中就是用 <code>javascript</code>，从<code>event</code>拿到<code>message</code>字段，然后用   空格来分割，取出前两段。然后通过 <code>Put</code> 来把这个日期临时保存到事件中，最后会把它删除。  <br />
+第二，用 <code>timestamp</code> 来设置日志的 <code>@timestamp</code> 字段， <code>layouts</code>表示输出格式， <code>test</code>表示输入的格式，这里的格式是 <code>golang</code> 日期格式（有点怪怪的）。 <br />
+第三，然后通过 <code>drop_fields</code> 把第一步中的临时字段删除。</p>
+<h2 id="syslog">收集syslog</h2>
+<ol>
+<li>
+<p>先在filebeat中配置一个inputs，这里配置了用udp协议监听<code>9876</code>端口的syslog输入。</p>
+<pre><code>filebeat.inputs:
+- type: syslog
+  format: rfc3164
+  protocol.udp:
+    host: "localhost:9876"
+</code></pre>
+</li>
+<li>
+<p>由于loggy需要其他一些信息，我们再配置一个处理器，对数据格式稍作调整。调整后的<code>process</code>看起是这样的，<code>copy-fields</code> 和 <code>replace</code> 这两个指令是新加的。</p>
+<pre><code>processors:
+  - script:
+      lang: javascript
+      source: &gt;
+        function process(event) {
+            var str = event.Get("message");
+            var ts = str.split(" ").slice(0,2).join(" ");
+            event.Put("log_time", ts);
+        }
+  - timestamp:
+      field: log_time
+      layouts:
+        - '2006-01-02 15:04:05.999'
+      test:
+        - '2019-11-18 04:59:51.123'
+      fail_on_error: false
+      ignore_missing: true
+  - copy_fields:
+      fields:
+      - from: log.source.address
+        to: source
+      fail_on_error: false
+      ignore_missing: true
+  - replace:
+      fields:
+        - field: "source"
+          pattern: '(\d+\.\d+\.\d+\.\d+):\d+'
+          replacement: "$1"
+      ignore_missing: true
+      fail_on_error: false
+  - drop_fields:
+      fields: ["log_time","host"]
+</code></pre>
+</li>
+<li>
+<p>配置 <code>/etc/rsyslog.conf</code>转发syslog到这个端口  <br />
+修改完成之后记得重启 rsyslog 服务</p>
+<pre><code>## 修改 /etc/rsyslog.conf，增加syslog转发到本机的9876端口，保存，重启
+*.* @localhost:9876
+</code></pre>
+</li>
+<li>
+<p>启动filebeat后，用ss命令确认7654端口已经开启，在linux可以用logger来发送syslog来验证。</p>
+<pre><code>logger Test Message
+</code></pre>
+</li>
+</ol>
+<h2 id="_2">运行</h2>
+<p>配置文件配好之后就可以运行了。</p>
+<pre><code>filebeat -e -c filebeat.yml
+</code></pre>
+<blockquote>
+<p>其中 -e表示把日志输出到控制台，方便调试和查看。正式运行时候应该去掉这个这个参数。</p>
+</blockquote></div>
+                    
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+                <p>Copyright &copy; 2023 - 2024 Code123</p>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../js/jquery-3.6.0.min.js"></script>
+        <script src="../js/bootstrap.min.js"></script>
+        <script>
+            var base_url = "..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../js/base.js"></script>
+        <script src="../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>
